@@ -25,4 +25,17 @@
 ## API
 
 - http://localhost:9000/api/
+- [POST] http://localhost:9001/api/register
+- [POST] http://localhost:9001/api/login
+- [POST] http://localhost:9001/api/logout
+- [POST] http://localhost:9001/api/refresh
+- [GET] http://localhost:9001/api/documents
+- [GET] http://localhost:9001/api/document/id
+- [PUT] http://localhost:9001/api/document/id
+- [DELETE] http://localhost:9001/api/document/id
+- [GET] http://localhost:9001/api/document/id/pdf
 
+## Sonarqube
+
+ - http://localhost:9001
+  - admin : admin
