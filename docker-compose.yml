@@ -1,0 +1,48 @@
+version: '3.9'
+
+services: 
+  web:
+    restart: unless-stopped
+    tty: true
+    build:
+      context: .
+    volumes: 
+      - ./:/var/www/html
+    depends_on: 
+      - db
+    networks:
+      - test-network
+
+  db:
+    image: postgres:12.0-alpine
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes: 
+    - "./.data/dbdata:/var/lib/postgresql/data"
+    networks:
+      - test-network
+
+  nginx:
+    image: nginx:1.23.3-alpine
+    restart: unless-stopped
+    ports:
+      - "9000:80"
+      - "443:443"
+    volumes: 
+      - ./:/var/www/html
+      - ./sourcefiles/nginx:/etc/nginx/conf.d
+    depends_on: 
+      - web
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
