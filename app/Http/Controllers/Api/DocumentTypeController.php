@@ -33,6 +33,9 @@ class DocumentTypeController extends Controller
     {
         try {
             $document = DocumentType::find($id);
+            if(empty($document)){
+                throw new DocumentTypeException('Document Type not found');
+            }
             return response()->json($document);
         }catch(DocumentTypeException $e){
             return response()->json([
@@ -56,7 +59,10 @@ class DocumentTypeController extends Controller
 
             $documentType = DocumentType::create($data);
 
-            return response()->json($documentType, 201);
+            return response()->json([
+                'message' => 'Document Type created successfully',
+                'documentType' => $documentType
+            ], 201);
         }catch(DocumentTypeException $e){
             return response()->json([
                 'message' => $e->getMessage()
@@ -75,9 +81,7 @@ class DocumentTypeController extends Controller
             ]);
             $document = DocumentType::find($id);
             if(!$document){
-                return response()->json([
-                    'message' => 'Document Type not found'
-                ], 404);
+                throw new DocumentTypeException('Document Type not found');
             }
             $data = [
                 'name' => $request->name,
@@ -88,7 +92,10 @@ class DocumentTypeController extends Controller
 
             $document->update($data);
 
-            return response()->json($document);
+            return response()->json([
+                'message' => 'Document Type updated successfully',
+                'documentType' => $document
+            ], 200);
         }catch(DocumentTypeException $e){
             return response()->json([
                 'message' => $e->getMessage()
@@ -96,10 +103,14 @@ class DocumentTypeController extends Controller
         }
     }
 
-    public function destroy(DocumentType $documentType)
+    public function destroy($id, DocumentType $documentType)
     {
         try {
-            $documentType->delete();
+            $document = DocumentType::find($id);
+            if(!$document){
+                throw new DocumentTypeException('Document Type not found');
+            }
+            $document->delete();
 
             return response()->json(null, 204);
         }catch(DocumentTypeException $e){
