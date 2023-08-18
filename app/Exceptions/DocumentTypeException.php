@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class DocumentTypeNotFoundException extends Exception
+class DocumentTypeException extends Exception
 {
     //
 }
